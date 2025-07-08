@@ -43,6 +43,6 @@ public struct AnyEvaluator<I, O>: Evaluator {
 }
 
 /// Error type for evaluation failures.
-enum EvaluationError: Error {
+public enum EvaluationError: Error {
     case invalidInput(String)
 }

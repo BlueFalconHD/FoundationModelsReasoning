@@ -10,25 +10,21 @@ import FoundationModels
 /// that a UI can render incrementally.
 public actor ReasoningOrchestrator {
 
-    // MARK: - Dependencies
     private let generator = ReasoningItemGenerator()
     private let completenessEvaluator = ReasoningCompletenessEvaluator()
     private let similarityEvaluator = SimilarityEvaluator()
     private let repetitionEvaluator = ReasoningRepetitionEvaluator()
 
-    // MARK: - State
     private var additionalItemsNeeded = 0
     private var itemsUntilNextEval = 0
     private(set) var acceptedItems: [ConversationReasoningItem] = []
     // Public accessor for callers outside the actor.
-    var finalItems: [ConversationReasoningItem] { acceptedItems }
-
-    // MARK: - Entry-point
+    public var finalItems: [ConversationReasoningItem] { acceptedItems }
 
     /// Returns a stream of reasoning-list snapshots. Each element contains
     /// `ConversationReasoningItem.PartiallyGenerated` instances so callers can
     /// render "AI-typing" effects.
-    nonisolated func reason(
+    nonisolated public func reason(
         for message: ConversationMessage,
         in conversation: Conversation
     ) -> AsyncThrowingStream<[ConversationReasoningItem.PartiallyGenerated], Error> {
@@ -58,8 +54,6 @@ public actor ReasoningOrchestrator {
     private func resetAcceptedItems() {
         acceptedItems = []
     }
-
-    // MARK: - Evaluation helpers
 
     private func initialEvaluation(
         for message: ConversationMessage,
@@ -158,7 +152,6 @@ public actor ReasoningOrchestrator {
             return
         }
 
-        
         acceptedItems = current + [finalized]
         continuation.yield(acceptedItems.map { $0.asPartiallyGenerated() })
 
@@ -197,9 +190,9 @@ public actor ReasoningOrchestrator {
                 (last.reasoningContent, candidate.reasoningContent)
             )
         }
-        
+
         print("Similarity score with last item: \(similarity)")
-        
+
         if similarity >= 0.90 {
             print("Rejecting reasoning item due to high similarity: \(similarity)")
             return true
@@ -214,13 +207,13 @@ public actor ReasoningOrchestrator {
             with: conversation.session,
             messages: conversation.messages + [msgWithCandidate]
         )
-        
-        let r =  try await repetitionEvaluator.evaluate(
+
+        let r = try await repetitionEvaluator.evaluate(
             (temp, candidate, similarity)
         )
-        
+
         print("Repetition evaluation result: \(r)")
-        
+
         return r
     }
 }

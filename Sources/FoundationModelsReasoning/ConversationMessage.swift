@@ -8,8 +8,8 @@ import Foundation
 import FoundationModels
 
 public class ConversationMessage: ConversationContextProvider, @unchecked Sendable {
-    let role: ConversationRole
-    var content: [any ConversationItem]
+    public let role: ConversationRole
+    public var content: [any ConversationItem]
 
     private let reasoningOrchestrator = ReasoningOrchestrator()
     private let finalResponseGenerator = FinalResponseGenerator()
@@ -18,7 +18,7 @@ public class ConversationMessage: ConversationContextProvider, @unchecked Sendab
 
     /// Events that can be emitted while the assistant message is being
     /// generated. Render them incrementally in a SwiftUI view.
-    enum StreamEvent {
+    public enum StreamEvent: Sendable {
         /// Snapshot of all reasoning items generated so far.
         /// The list may contain unfinished (`PartiallyGenerated`) items.
         case reasoning([ConversationReasoningItem.PartiallyGenerated])
@@ -36,7 +36,7 @@ public class ConversationMessage: ConversationContextProvider, @unchecked Sendab
     /// Generates the assistant's reply **while streaming partial results**.
     /// - Returns: An `AsyncThrowingStream` that yields `StreamEvent`s which
     ///            the UI can subscribe to for live updates.
-    func generate(
+    public func generate(
         using conversation: Conversation,
         with session: LanguageModelSession
     ) -> AsyncThrowingStream<StreamEvent, Error> {
@@ -44,7 +44,6 @@ public class ConversationMessage: ConversationContextProvider, @unchecked Sendab
         AsyncThrowingStream { continuation in
             Task {
                 do {
-                    // 1️⃣  STREAM REASONING ITEMS
                     for try await snapshot in reasoningOrchestrator.reason(
                         for: self,
                         in: conversation
@@ -56,7 +55,6 @@ public class ConversationMessage: ConversationContextProvider, @unchecked Sendab
                     let finalizedReasoning = await reasoningOrchestrator.finalItems
                     self.content = finalizedReasoning.map { $0 as any ConversationItem }
 
-                    // 2️⃣  STREAM FINAL VISIBLE ANSWER
                     let messageWithContent = ConversationMessage(role: role, content: content)
                     let tempConversation = Conversation(
                         with: conversation.session,

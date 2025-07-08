@@ -32,17 +32,29 @@ public struct ConversationReasoningItem: ConversationItem, Sendable {
             "Indicates whether another evaluation of the reasoning process, which determiness whether the reasoning should continue, is needed. You should not set this flag unless you fully believe you should be done with your reasoning process, and even then the evaluation might determine further reasoning is necessary."
     )
     public var evalNeeded: Bool
-    
+
     // BEGIN XCODE MACRO EXPANSION INLINING
     nonisolated public static var generationSchema: FoundationModels.GenerationSchema {
         FoundationModels.GenerationSchema(
             type: Self.self,
             description:
-                    "A reasoning item in a conversation, containing content (your thinking process) and a title (short summary of the content digestable in an interface).",
+                "A reasoning item in a conversation, containing content (your thinking process) and a title (short summary of the content digestable in an interface).",
             properties: [
-                FoundationModels.GenerationSchema.Property(name: "reasoningContent", description: "The content of the reasoning item, which is your thinking process or explanation.", type: String.self),
-                FoundationModels.GenerationSchema.Property(name: "title", description: "A short summary of the reasoning content, digestible in an interface.", type: String.self),
-                FoundationModels.GenerationSchema.Property(name: "evalNeeded", description: "Indicates whether another evaluation of the reasoning process, which determiness whether the reasoning should continue, is needed. You should not set this flag unless you fully believe you should be done with your reasoning process, and even then the evaluation might determine further reasoning is necessary.", type: Bool.self)
+                FoundationModels.GenerationSchema.Property(
+                    name: "reasoningContent",
+                    description:
+                        "The content of the reasoning item, which is your thinking process or explanation.",
+                    type: String.self),
+                FoundationModels.GenerationSchema.Property(
+                    name: "title",
+                    description:
+                        "A short summary of the reasoning content, digestible in an interface.",
+                    type: String.self),
+                FoundationModels.GenerationSchema.Property(
+                    name: "evalNeeded",
+                    description:
+                        "Indicates whether another evaluation of the reasoning process, which determiness whether the reasoning should continue, is needed. You should not set this flag unless you fully believe you should be done with your reasoning process, and even then the evaluation might determine further reasoning is necessary.",
+                    type: Bool.self),
             ]
         )
     }
@@ -52,12 +64,12 @@ public struct ConversationReasoningItem: ConversationItem, Sendable {
             properties: [
                 "reasoningContent": reasoningContent,
                 "title": title,
-                "evalNeeded": evalNeeded
+                "evalNeeded": evalNeeded,
             ]
         )
     }
 
-    nonisolated public struct PartiallyGenerated: Identifiable, ConvertibleFromGeneratedContent {
+    nonisolated public struct PartiallyGenerated: Identifiable, ConvertibleFromGeneratedContent, Sendable {
         public var id: GenerationID
         public var reasoningContent: String.PartiallyGenerated?
         public var title: String.PartiallyGenerated?
@@ -69,7 +81,7 @@ public struct ConversationReasoningItem: ConversationItem, Sendable {
             self.evalNeeded = try content.value(forProperty: "evalNeeded")
         }
     }
-    
+
     // END XCODE MACRO EXPANSION INLINING
 }
 

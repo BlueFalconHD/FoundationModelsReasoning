@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol RootConversationContextProvider {
+public protocol RootConversationContextProvider {
     /// Serialize the context back to prompt-ready text.
     func toPlainText() -> String
 }

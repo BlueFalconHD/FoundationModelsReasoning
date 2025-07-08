@@ -23,15 +23,19 @@ public struct ConversationPlainTextItem: ConversationItem {
             "The text content of the plain text item, which is your final response to be shown to the user."
     )
     public var text: String
-    
+
     // BEGIN XCODE MACRO EXPANSION INLINING
     nonisolated public static var generationSchema: FoundationModels.GenerationSchema {
         FoundationModels.GenerationSchema(
             type: Self.self,
             description:
-                    "A plain text item in a conversation message which contains your final response to be shown to the user.",
+                "A plain text item in a conversation message which contains your final response to be shown to the user.",
             properties: [
-                FoundationModels.GenerationSchema.Property(name: "text", description: "The text content of the plain text item, which is your final response to be shown to the user.", type: String.self)
+                FoundationModels.GenerationSchema.Property(
+                    name: "text",
+                    description:
+                        "The text content of the plain text item, which is your final response to be shown to the user.",
+                    type: String.self)
             ]
         )
     }
@@ -44,7 +48,7 @@ public struct ConversationPlainTextItem: ConversationItem {
         )
     }
 
-    nonisolated public struct PartiallyGenerated: Identifiable, ConvertibleFromGeneratedContent {
+    nonisolated public struct PartiallyGenerated: Identifiable, ConvertibleFromGeneratedContent, Sendable {
         public var id: GenerationID
         var text: String.PartiallyGenerated?
         nonisolated public init(_ content: FoundationModels.GeneratedContent) throws {

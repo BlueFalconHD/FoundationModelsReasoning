@@ -9,7 +9,7 @@ import Foundation
 import FoundationModels
 
 public class Conversation: ConversationContextProvider, @unchecked Sendable {
-    let session: LanguageModelSession
+    public let session: LanguageModelSession
     public var messages: [ConversationMessage]
 
     public init(with session: LanguageModelSession, messages: [ConversationMessage] = []) {
@@ -24,7 +24,7 @@ public class Conversation: ConversationContextProvider, @unchecked Sendable {
 
     /// Generates a new assistant message and **streams** partial output.
     /// Forward the returned stream to your SwiftUI `View` for live rendering.
-    func generateMessage()
+    public func generateMessage()
         -> AsyncThrowingStream<ConversationMessage.StreamEvent, Error>
     {
         let newMessage = ConversationMessage(role: .assistant, content: [])
