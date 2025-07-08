@@ -48,7 +48,9 @@ public struct ConversationPlainTextItem: ConversationItem {
         )
     }
 
-    nonisolated public struct PartiallyGenerated: Identifiable, ConvertibleFromGeneratedContent, Sendable {
+    nonisolated public struct PartiallyGenerated: Identifiable, ConvertibleFromGeneratedContent,
+        Sendable
+    {
         public var id: GenerationID
         var text: String.PartiallyGenerated?
         nonisolated public init(_ content: FoundationModels.GeneratedContent) throws {
@@ -57,6 +59,11 @@ public struct ConversationPlainTextItem: ConversationItem {
         }
     }
     // END XCODE MACRO EXPANSION INLINING
+
+    // initializer for the struct
+    public init(text: String) {
+        self.text = text
+    }
 }
 
 // BEGIN XCODE MACRO EXPANSION INLINING
