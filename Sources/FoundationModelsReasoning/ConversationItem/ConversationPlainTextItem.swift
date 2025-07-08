@@ -52,7 +52,7 @@ public struct ConversationPlainTextItem: ConversationItem {
         Sendable
     {
         public var id: GenerationID
-        var text: String.PartiallyGenerated?
+        public var text: String.PartiallyGenerated?
         nonisolated public init(_ content: FoundationModels.GeneratedContent) throws {
             self.id = content.id ?? GenerationID()
             self.text = try content.value(forProperty: "text")
