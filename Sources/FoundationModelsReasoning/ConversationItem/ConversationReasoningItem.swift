@@ -69,7 +69,9 @@ public struct ConversationReasoningItem: ConversationItem, Sendable {
         )
     }
 
-    nonisolated public struct PartiallyGenerated: Identifiable, ConvertibleFromGeneratedContent, Sendable {
+    nonisolated public struct PartiallyGenerated: Identifiable, ConvertibleFromGeneratedContent,
+        Sendable, Equatable, Hashable
+    {
         public var id: GenerationID
         public var reasoningContent: String.PartiallyGenerated?
         public var title: String.PartiallyGenerated?

@@ -49,7 +49,7 @@ public struct ConversationPlainTextItem: ConversationItem {
     }
 
     nonisolated public struct PartiallyGenerated: Identifiable, ConvertibleFromGeneratedContent,
-        Sendable
+        Sendable, Equatable, Hashable
     {
         public var id: GenerationID
         public var text: String.PartiallyGenerated?
